@@ -1,0 +1,51 @@
+<resources>
+    <string name="app_name">CovidPass2.0</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Covid Pass</string>
+    <string name="nav_header_subtitle">najlepsia apka na svete</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <string-array name="vakciny">
+        <item>Pfizer</item>
+        <item>Moderna</item>
+        <item>AstraZeneca</item>
+        <item>Sputnik</item>
+    </string-array>
+    <string-array name="test">
+        <item>PCR</item>
+        <item>Antigen</item>
+        <item>Plachaci</item>
+    </string-array>
+
+
+    <string name="menu_os_udaje">Os.udaje</string>
+    <string name="menu_testy">Testy</string>
+    <string name="menu_ockovanie">Ockovanie</string>
+    <string name="menu_nakazeny">Nakazeny</string>
+    <string name="menu_kontrola">Kontrola</string>
+    <string name="menu_karantena">Karantena</string>
+    <string name="test_datum">Datum testu:</string>
+    <string name="test_typ">Typ testu:</string>
+    <string name="rodCislo">Rod. cislo:</string>
+    <string name="meno">Meno:</string>
+    <string name="priezvisko">Priezvisko:</string>
+    <string name="mesto">Mesto:</string>
+    <string name="adresa">Adresa:</string>
+    <string name="stav">Stav:</string>
+    <string name="poslednyTest">Posledny test:</string>
+    <string name="vysledok">Vysledok:</string>
+    <string name="ockovany">Ockovany:</string>
+    <string name="typVakciny">Typ vakciny:</string>
+    <string name="datum1">Datum 1. davka:</string>
+    <string name="datum2">Datum 2. davka:</string>
+    <string name="dveDavky">Dve davky:</string>
+    <string name="kodOCcentra">Kod ock. centra:</string>
+    <string name="datumZac">Datum zaciatku:</string>
+    <string name="dobaTrvania">Doba trvania:</string>
+
+    <string name="rod_cislo_zadaj">musis zadat rod. cislo</string>
+
+
+</resources>

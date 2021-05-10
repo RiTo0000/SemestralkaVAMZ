@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_os_udaje"
+            android:icon="@drawable/ic_os_udaje"
+            android:title="@string/menu_os_udaje" />
+        <item
+            android:id="@+id/nav_test"
+            android:icon="@drawable/ic_test"
+            android:title="@string/menu_testy"/>
+            <!--android:onClick="zapniFilter"-->
+        <item
+            android:id="@+id/nav_ockovanie"
+            android:icon="@drawable/ic_ockovanie"
+            android:title="@string/menu_ockovanie" />
+        <item
+            android:id="@+id/nav_kontrola"
+            android:icon="@drawable/ic_kontrola"
+            android:title="@string/menu_kontrola" />
+        <item
+            android:id="@+id/nav_karantena"
+            android:icon="@drawable/ic_karantena"
+            android:title="@string/menu_karantena" />
+
+
+    </group>
+</menu>

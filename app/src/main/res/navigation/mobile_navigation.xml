@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/nav_os_udaje">
+
+    <fragment
+        android:id="@+id/nav_kontrola"
+        android:name="com.example.covidpass20.ui.kontrola.KontrolaFragment"
+        android:label="@string/menu_kontrola"
+        tools:layout="@layout/kontrola_fragment" />
+    <fragment
+        android:id="@+id/nav_karantena"
+        android:name="com.example.covidpass20.ui.karantena.KarantenaFragment"
+        android:label="@string/menu_karantena"
+        tools:layout="@layout/karantena_fragment" />
+    <fragment
+        android:id="@+id/nav_os_udaje"
+        android:name="com.example.covidpass20.ui.os_udaje.OsUdajeFragment"
+        android:label="@string/menu_os_udaje"
+        tools:layout="@layout/os_udaje_fragment" />
+
+    <fragment
+        android:id="@+id/nav_test"
+        android:name="com.example.covidpass20.ui.test.TestFragment"
+        android:label="@string/menu_testy"
+        tools:layout="@layout/test_fragment" />
+
+    <fragment
+        android:id="@+id/nav_ockovanie"
+        android:name="com.example.covidpass20.ui.ockovanie.OckovanieFragment"
+        android:label="@string/menu_ockovanie"
+        tools:layout="@layout/ockovanie_fragment" />
+</navigation>
