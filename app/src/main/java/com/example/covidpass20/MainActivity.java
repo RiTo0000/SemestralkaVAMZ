@@ -44,7 +44,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        System.out.println("zacinam");
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -84,7 +83,6 @@ public class MainActivity extends AppCompatActivity {
 
     public void onClickBtnSentInfo(View v)
     {
-        System.out.println("klikol som sentInfo.....................................");
         EditText menoPole, peizviskoPole, rcPole, mestoPole, adresaPole;
         menoPole = findViewById(R.id.meno);
         peizviskoPole = findViewById(R.id.priezvisko);
@@ -92,23 +90,27 @@ public class MainActivity extends AppCompatActivity {
         mestoPole = findViewById(R.id.mesto);
         adresaPole = findViewById(R.id.adresa);
         String meno = menoPole.getText().toString();
+        meno = meno.trim();
         String priezvisko = peizviskoPole.getText().toString();
+        priezvisko = priezvisko.trim();
         String rodcislo = rcPole.getText().toString();
         rodcislo = rodcislo.trim();
         String mesto = mestoPole.getText().toString();
+        mesto = mesto.trim();
         String adresa = adresaPole.getText().toString();
-        if (!rodcislo.equals(""))
+        adresa = adresa.trim();
+        if (!rodcislo.equals("") && !meno.equals("") && !priezvisko.equals("") && !mesto.equals("") && !adresa.equals("")) //kontrola ci uzivatel zadal vsetky parametre
         {
-            if (db.jeVtabulke(rodcislo, "UserInfo",2))
+            if (db.jeVtabulke(rodcislo, "UserInfo",2)) //kontrola ci taky uzivatel uz neexistuje ak ano robim update ak nie robim insert
             {
                 boolean checkUpdate = db.updateUser(meno, priezvisko, rodcislo, mesto, adresa);
                 if (checkUpdate)
                 {
-                    Toast.makeText(MainActivity.this, "upravil si uz existujuceho uzivatela", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "Upravil si už existujúceho používateľa", Toast.LENGTH_SHORT).show();
                 }
                 else
                 {
-                    Toast.makeText(MainActivity.this, "neupravil si uz existujuceho uzivatela", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "Neupravil si už existujúceho používateľa", Toast.LENGTH_SHORT).show();
                 }
             }
             else
@@ -116,17 +118,17 @@ public class MainActivity extends AppCompatActivity {
                 boolean checkInsert = db.insertUser(meno, priezvisko, rodcislo, mesto, adresa);
                 if (checkInsert)
                 {
-                    Toast.makeText(MainActivity.this, "vlozil si noveho pouzivatela", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "Vložil si nového používateľa", Toast.LENGTH_SHORT).show();
 
                 }
                 else
                 {
-                    Toast.makeText(MainActivity.this, "nevlozil si noveho pouzivatela", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "Nevložil si nového používateľa", Toast.LENGTH_SHORT).show();
                 }
             }
         }
         else
-            Toast.makeText(this, "Rod. cislo nemoze byt prazdne", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Všetky údaje musia byť vyplnené", Toast.LENGTH_SHORT).show();
     }
 
 
@@ -146,36 +148,32 @@ public class MainActivity extends AppCompatActivity {
 
     public void onClickBtnVypisOsoby(View v)
     {
-        System.out.println("klikol som vypisOsoby.....................................");
         Cursor res = db.getData("UserInfo");
         if (res.getCount() == 0)
         {
-            Toast.makeText(this, "nic tam neni", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "V databáze nie je žiaden užívateľ", Toast.LENGTH_SHORT).show();
             return;
         }
         StringBuffer buffer = new StringBuffer();
-        while (res.moveToNext()) {
+        while (res.moveToNext()) { //naplnanie buffera
             buffer.append("Meno : " + res.getString(0) + "\n");
             buffer.append("Priezvisko : " + res.getString(1) + "\n");
-            buffer.append("Rod. cislo : " + res.getString(2) + "\n");
+            buffer.append("Rod. číslo : " + res.getString(2) + "\n");
             buffer.append("Mesto : " + res.getString(3) + "\n");
             buffer.append("Adresa : " + res.getString(4) + "\n\n");
         }
-
+        //vypis buffera
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
         builder.setCancelable(true);
-        builder.setTitle("Uzivatelia");
+        builder.setTitle("Užívatelia");
         builder.setMessage(buffer.toString());
         builder.show();
-
-
     }
 
 
 
     public void onClickBtnZapTest(View v)
     {
-        System.out.println("klikol som zapTest.....................................");
         EditText datumPole, rcPole;
         Spinner typPole = findViewById(R.id.typ);
         datumPole = findViewById(R.id.datum);
@@ -191,80 +189,77 @@ public class MainActivity extends AppCompatActivity {
             vysledok = "Positive";
         else
             vysledok = "Negative";
-        if (!rodcislo.equals("")) {
-            if (db.jeVtabulke(rodcislo, "UserInfo",2)) {
+        if (!rodcislo.equals("")) { //kontrola ci uzivatel zadal rod. cislo
+            if (db.jeVtabulke(rodcislo, "UserInfo",2)) { //kontrola ci uzivatel s danym rodnym cislom existuje
                 Cursor res = db.getData("Testy");
-                if (datum.equals(""))
+                if (datum.equals("") || datum.equals("DD/MM/YYYY")) //kontrola spravnosti zadaneho datumu
                 {
-                    Toast.makeText(this, "musis zadat datum", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Musíš zadať dátum", Toast.LENGTH_SHORT).show();
                 }
                 else
                 {
-                    if (db.help.porovnajDatumyPoPridaniXdni(db.help.dateFromString(datum), new Date(), 0)) {
+                    if (db.help.porovnajDatumyPoPridaniXdni(db.help.dateFromString(datum), new Date(), 0)) { //kontrola ci zadany datum nie je neskor ako ten dnesny
                         String poslednyDatum = "01/01/0001";
                         while (res.moveToNext()) {
                             String rcOut = res.getString(4);
 
                             if (rodcislo.equals(rcOut))
                             {
-                                poslednyDatum = res.getString(1);
+                                poslednyDatum = res.getString(1); //zapis datumu posledneho testu pre dane rod. cislo
                             }
                         }
-                        //kontrola ci zadany datum nieje mensi ako posledny
-                        if (db.help.porovnajDatumyPoPridaniXdni(db.help.dateFromString(poslednyDatum), db.help.dateFromString(datum), 0))
+                        if (db.help.porovnajDatumyPoPridaniXdni(db.help.dateFromString(poslednyDatum), db.help.dateFromString(datum), 0)) //kontrola ci zadany datum nie je mensi ako posledny
                         {
                             boolean checkInsert = db.insertTest(res.getCount() + 1, datum, vysledok, typ, rodcislo);
                             if (checkInsert)
-                                Toast.makeText(MainActivity.this, "test bol zadany", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(MainActivity.this, "Test bol uložený", Toast.LENGTH_SHORT).show();
                             else
-                                Toast.makeText(MainActivity.this, "test nebol zadany", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(MainActivity.this, "Test nebol uložený", Toast.LENGTH_SHORT).show();
                         }
                         else
-                            Toast.makeText(this, "Musis zadat neskorsi datum ako datum posledneho testu", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(this, "Musíš zadať neskorší dátum ako je dátum posledného testu", Toast.LENGTH_SHORT).show();
                     }
                     else
-                        Toast.makeText(this, "datum nesmie byt neskorsi ako dnesny", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, "Zadaný dátum nesmie byť neskorší ako je ten dnešný", Toast.LENGTH_SHORT).show();
 
                 }
             }
             else {
-                Toast.makeText(MainActivity.this, "osoba s danym rod cislom neexistuje", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "Užívateľ s daným rod. číslom neexistuje", Toast.LENGTH_SHORT).show();
             }
         }
         else
-            Toast.makeText(this, "musis zadat rod. cislo", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Rod. číslo musí byť vyplnené", Toast.LENGTH_SHORT).show();
     }
 
     public void onClickBtnVypTesty(View v)
     {
-        System.out.println("klikol som vypTesty.....................................");
-        //tu robim vypis
-
         EditText rcPole;
         rcPole = findViewById(R.id.rcVypis);
         String rc = rcPole.getText().toString();
         rc = rc.trim();
-        if (!rc.equals("")) {
+        if (!rc.equals("")) { //kontrola ci bolo zadane rod. cislo
             Cursor res = db.getData("Testy");
-            if (res.getCount() == 0)
+            if (res.getCount() == 0) //kontrola ci tabulka testov nie je prazdna
             {
-                Toast.makeText(this, "nic tam neni", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "V tabuľke testy nie je žiaden záznam", Toast.LENGTH_SHORT).show();
                 return;
             }
             StringBuffer buffer = new StringBuffer();
             while (res.moveToNext()) {
                 String rcvypis = res.getString(4);
-                if (rc.equals(rcvypis)) {
+                if (rc.equals(rcvypis)) { //naplnanie buffera
 
                     buffer.append("Id_testu : " + res.getString(0) + "\n");
-                    buffer.append("Datum : " + res.getString(1) + "\n");
-                    buffer.append("Vysledok : " + res.getString(2) + "\n");
+                    buffer.append("Dátum : " + res.getString(1) + "\n");
+                    buffer.append("Výsledok : " + res.getString(2) + "\n");
                     buffer.append("Typ testu : " + res.getString(3) + "\n");
-                    buffer.append("Rod. cislo : " + rcvypis + "\n\n");
+                    buffer.append("Rod. číslo : " + rcvypis + "\n\n");
                 }
             }
             if (buffer.length() == 0)
-                buffer.append("Rod. cislo : " + rc + " nema zapisane ziadne testy"+ "\n\n");
+                buffer.append("Rod. číslo : " + rc + " nemá zapésané žiadne testy"+ "\n\n");
+            // vypis buffera
             AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
             builder.setCancelable(true);
             builder.setTitle("Testy");
@@ -272,48 +267,27 @@ public class MainActivity extends AppCompatActivity {
             builder.show();
         }
         else
-            Toast.makeText(this, "musis zadat rod. cislo", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Rod. číslo musí byť vyplnené", Toast.LENGTH_SHORT).show();
     }
 
-    public String getDatum(String rodCislo, int cisDatum) {
+    public String getDatum(String rodCislo, int cisDatum) { //metoda na vratenie datumu bud prveho alebo druheho podla vstupnych parametrov
         Cursor res = db.getData("Ockovanie");
-        if (cisDatum == 1)
+        if (res.getCount() == 0)
         {
-            if (res.getCount() == 0)
-            {
-                return "";
-            }
-            String rc;
-            String datum1;
-            while (res.moveToNext()) {
-                datum1 = res.getString(0);
-                rc = res.getString(4);
-                if (rc.equals(rodCislo))
-                    return datum1;
-            }
             return "";
         }
-        else if (cisDatum == 2)
-        {
-            if (res.getCount() == 0)
-            {
-                return "";
-            }
-            String rc;
-            String datum2;
-            while (res.moveToNext()) {
-                datum2 = res.getString(1);
-                rc = res.getString(4);
-                if (rc.equals(rodCislo))
-                    return datum2;
-            }
-            return "";
+        String rc;
+        String datum;
+        while (res.moveToNext()) {
+            datum = res.getString(cisDatum - 1);
+            rc = res.getString(4);
+            if (rc.equals(rodCislo))
+                return datum;
         }
         return "";
     }
 
     public void onClickBtnZapOckovanie(View v) {
-        System.out.println("klikol som zapOckovanie.....................................");
         EditText datum1Pole, datum2Pole, rcPole, kodOCPole;
         datum1Pole = findViewById(R.id.datum1);
         datum2Pole = findViewById(R.id.datum2);
@@ -330,11 +304,9 @@ public class MainActivity extends AppCompatActivity {
         String kodOC = kodOCPole.getText().toString();
         kodOC = kodOC.trim();
         CheckBox druhaDavkaPole = findViewById(R.id.druhaDavka);
-        if (!rodCislo.equals("")) {
-
-            if (kodOC.equals(""))
-            {
-                Toast.makeText(MainActivity.this, "nevyplnili ste kod ockovacieho centra", Toast.LENGTH_SHORT).show();
+        if (!rodCislo.equals("")) { //kontrola ci uzivatel zadal rod. cislo
+            if (kodOC.equals("")) { //kontrola ci je kod ockovacieho centra vyplneny
+                Toast.makeText(MainActivity.this, "Kód očkovacieho centra musí byť vyplnený", Toast.LENGTH_SHORT).show();
                 return;
             }
             int pocetDavok;
@@ -347,48 +319,39 @@ public class MainActivity extends AppCompatActivity {
                 pocetDavok = 1;
                 datum2 = datum1;
             }
-            Cursor res = db.getData("Ockovanie");
-            if (db.jeVtabulke(rodCislo, "UserInfo",2))
+            if (db.jeVtabulke(rodCislo, "UserInfo",2)) //kontrola ci zadane rod. cislo je ako uzivatel v tabulke userInfo
             {
-                System.out.println("jeOsoba");
-                if (db.jeVtabulke(rodCislo, "Ockovanie",4))
+                if (db.jeVtabulke(rodCislo, "Ockovanie",4)) //kontrola ci uzivatel uz nahodou nebol ockovany
                 {
-                    System.out.println("jeOckovany");
-                    if (getDatum(rodCislo,2).equals(""))
+                    if (getDatum(rodCislo,2).equals("")) //kontrola ci osoba s danym rod. cislom uz nahodou nieje zaockovana
                     {
-
-                        if (datum2.equals(""))
-                            Toast.makeText(MainActivity.this, "nezadal si druhy datum", Toast.LENGTH_SHORT).show();
+                        if (datum2.equals("") || datum2.equals("DD/MM/YYYY")) //kontrola ci uzivatel vyplnil druhy datum
+                            Toast.makeText(MainActivity.this, "Druhý dátum musí byť vyplnený", Toast.LENGTH_SHORT).show();
                         else
                         {
-                            if (datum1.equals(""))
-                                Toast.makeText(MainActivity.this, "nezadal si prvy datum", Toast.LENGTH_SHORT).show();
-                            else
-                            {
-                                if (db.help.porovnajDatumyPoPridaniXdni(db.help.dateFromString(datum2), new Date(), 0)) {
-                                    if (db.help.porovnajDatumyPoPridaniXdni(db.help.dateFromString(getDatum(rodCislo,1)), db.help.dateFromString(datum2), 0))
-                                    {
-                                        boolean checkUpdate = db.updateOckovanie(datum2, rodCislo);
-                                        if (checkUpdate)
-                                            Toast.makeText(MainActivity.this, "doplnil si druhy datum", Toast.LENGTH_SHORT).show();
-                                        else
-                                            Toast.makeText(MainActivity.this, "nedoplnil si druhy datum", Toast.LENGTH_SHORT).show();
-                                    }
+                            if (db.help.porovnajDatumyPoPridaniXdni(db.help.dateFromString(datum2), new Date(), 0)) { //kontrola ci druhy datum nieje neskorsi ako ten dnesny
+                                if (db.help.porovnajDatumyPoPridaniXdni(db.help.dateFromString(getDatum(rodCislo,1)), db.help.dateFromString(datum2), 0)) //kontrola ci druhy datum je neskor ako ten prvy
+                                {
+                                    boolean checkUpdate = db.updateOckovanie(datum2, rodCislo);
+                                    if (checkUpdate)
+                                        Toast.makeText(MainActivity.this, "Doplnil si druhý dátum", Toast.LENGTH_SHORT).show();
                                     else
-                                        Toast.makeText(this, "druhy datum musi byt neskor ako prvy", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(MainActivity.this, "Nedoplnil si druhý dátum", Toast.LENGTH_SHORT).show();
                                 }
                                 else
-                                    Toast.makeText(this, "druhy datum nesmie byt neskorsi ako je ten dnesny", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(this, "Druhý dátum musí byť neskôr ako ten prvý", Toast.LENGTH_SHORT).show();
                             }
+                            else
+                                Toast.makeText(this, "Druhý dátum nesmie byť neskorší ako je ten dnešný", Toast.LENGTH_SHORT).show();
                         }
                     }
                     else
-                        Toast.makeText(MainActivity.this, "osoba s danym rodnym cislom je uz zaockovana", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this, "Osoba s daným rodným číslom je už zaočkovaná", Toast.LENGTH_SHORT).show();
                 }
                 else
                 {
-                    if (datum1.equals(""))
-                        Toast.makeText(MainActivity.this, "nezadal si prvy datum", Toast.LENGTH_SHORT).show();
+                    if (datum1.equals("") || datum1.equals("DD/MM/YYYY")) //kontrola ci uzivatel vyplnil prvy datum
+                        Toast.makeText(MainActivity.this, "Prvý dátum musí byť vyplnený", Toast.LENGTH_SHORT).show();
                     else
                     {
                         if (db.help.porovnajDatumyPoPridaniXdni(db.help.dateFromString(datum1), new Date(), 0)) { //kontrola datum1 ci neni vacsi ako dnesny
@@ -399,83 +362,79 @@ public class MainActivity extends AppCompatActivity {
 
                                         boolean checkInsert = db.insertOckovanie(datum1, datum2, typVakciny, pocetDavok, rodCislo, kodOC);
                                         if (checkInsert)
-                                            Toast.makeText(MainActivity.this, "zapisal si ockovanie", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(MainActivity.this, "Očkovanie bolo zapísané", Toast.LENGTH_SHORT).show();
                                         else
-                                            Toast.makeText(MainActivity.this, "nezapisal si ockovanie", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(MainActivity.this, "Očkovanie nebolo zapísané", Toast.LENGTH_SHORT).show();
                                     }else
-                                        Toast.makeText(this, "druhy datum musi byt neskor ako prvy", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(this, "Druhý dátum musí byť neskorší ako prvý", Toast.LENGTH_SHORT).show();
                                 }
                                 else
                                 {
                                     boolean checkInsert = db.insertOckovanie(datum1, datum2, typVakciny, pocetDavok, rodCislo, kodOC);
                                     if (checkInsert)
-                                        Toast.makeText(MainActivity.this, "zapisal si ockovanie", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(MainActivity.this, "Očkovanie bolo zapísané", Toast.LENGTH_SHORT).show();
                                     else
-                                        Toast.makeText(MainActivity.this, "nezapisal si ockovanie", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(MainActivity.this, "Očkovanie nebolo zapísané", Toast.LENGTH_SHORT).show();
                                 }
 
                             } else
-                                Toast.makeText(this, "druhy datum nesmie byt neskorsi ako je ten dnesny", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(this, "Druhý dátum nesmie byť neskorší ako je ten dnešný", Toast.LENGTH_SHORT).show();
                         } else
-                            Toast.makeText(this, "prvy datum nesmie byt neskorsi ako dnesny", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(this, "Prvý dátum nesmie byť neskorší ako je ten dnešný", Toast.LENGTH_SHORT).show();
                     }
                 }
             }
             else {
-                Toast.makeText(MainActivity.this, "osoba s danym rodnym cislom neexistuje", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "Užívateľ s daným rodným číslom neexistuje", Toast.LENGTH_SHORT).show();
             }
 
         }
         else
-            Toast.makeText(this, "musis zadat rod. cislo", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Rod. číslo musí byť vyplnené", Toast.LENGTH_SHORT).show();
 
     }
 
     public void onClickBtnVypOckovanie(View v)
     {
-        System.out.println("klikol som vypOckovanie.....................................");
-        //tu robim vypis
-
         EditText rcPole;
         rcPole = findViewById(R.id.rcOckovanieVypis);
         String rc = rcPole.getText().toString();
         rc = rc.trim();
-        if (!rc.equals("")) {
+        if (!rc.equals("")) { //kontrola rod. cisla
             Cursor res = db.getData("Ockovanie");
-            if (res.getCount() == 0)
+            if (res.getCount() == 0) //kontrola ci v danej tabulke je nejaky zaznam
             {
-                Toast.makeText(this, "nic tam neni", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "V tabuľke očkovanie nie je žiaden záznam", Toast.LENGTH_SHORT).show();
                 return;
             }
             StringBuffer buffer = new StringBuffer();
             while (res.moveToNext()) {
                 String rcvypis = res.getString(4);
-                if (rc.equals(rcvypis)) {
-
-                    buffer.append("Datum 1. davky : " + res.getString(0) + "\n");
-                    buffer.append("Datum 2. davky : " + res.getString(1) + "\n");
-                    buffer.append("Typ ockovacej latky : " + res.getString(2) + "\n");
-                    buffer.append("Pocet potrebnych davok : " + res.getString(3) + "\n");
-                    buffer.append("Rod. cislo : " + rcvypis + "\n");
-                    buffer.append("Kod ockovacieho centra : " + res.getString(5) + "\n\n");
+                if (rc.equals(rcvypis)) { //naplnanie buffera
+                    buffer.append("Dátum 1. dávky : " + res.getString(0) + "\n");
+                    buffer.append("Dátum 2. dávky : " + res.getString(1) + "\n");
+                    buffer.append("Typ očkovacej látky : " + res.getString(2) + "\n");
+                    buffer.append("Počet potrebných dávok : " + res.getString(3) + "\n");
+                    buffer.append("Rod. číslo : " + rcvypis + "\n");
+                    buffer.append("Kód očkovacieho centra : " + res.getString(5) + "\n\n");
                 }
             }
             if (buffer.length() == 0)
-                buffer.append("Rod. cislo : " + rc + " nie je zaockovana"+ "\n\n");
+                buffer.append("Užívateľ s rod. číslom : " + rc + " nie je zaočkovaná"+ "\n\n");
+            //vypis buffera
             AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
             builder.setCancelable(true);
-            builder.setTitle("Ockovanie");
+            builder.setTitle("Očkovanie");
             builder.setMessage(buffer.toString());
             builder.show();
 
         }
         else
-            Toast.makeText(this, "musis zadat rod. cislo", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Rod. číslo musí byť vyplnené", Toast.LENGTH_SHORT).show();
     }
 
 
     public void onClickBtnZacKarantenu(View v) {
-        System.out.println("klikol som zacKarantenu.....................................");
         EditText datumZaciatkuPole, dobaTrvaniaPole, rcPole;
         datumZaciatkuPole = findViewById(R.id.datumZaciatku);
         dobaTrvaniaPole = findViewById(R.id.dobaTrvania);
@@ -486,14 +445,14 @@ public class MainActivity extends AppCompatActivity {
         dobaTrvania = dobaTrvania.trim();
         String rodCislo = rcPole.getText().toString();
         rodCislo = rodCislo.trim();
-        if (!rodCislo.equals("")) {
+        if (!rodCislo.equals("")) { //kontrola zadaneho rod. cisla
             Cursor res = db.getData("Karantena");
-            if (db.jeVtabulke(rodCislo, "UserInfo", 2)) {
-                if (db.jeVtabulke(rodCislo, "Karantena", 3)) {
+            if (db.jeVtabulke(rodCislo, "UserInfo", 2)) { //kontrola ci uzivatel s danym rod. cislom exituje
+                if (db.jeVtabulke(rodCislo, "Karantena", 3)) { //kontrola ci uzivatel s danym rodnym cislom je v tabulke karantena
                     res = db.getData("Karantena");
                     boolean jeVkarantene = false;
                     String poslednyDatum = "";
-                    while (res.moveToNext()) {
+                    while (res.moveToNext()) { //prechadzanie databazou a zistovanie posledneho datumu karanteny a ci je karantena este platna
                         String rcOut = res.getString(3);
 
                         if (rodCislo.equals(rcOut)) {
@@ -502,49 +461,46 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }
                     if (jeVkarantene)
-                        Toast.makeText(MainActivity.this, "osoba s danym rod cislom uz je v karantene", Toast.LENGTH_SHORT).show();
-                    else if (datumZaciatku.equals("") || dobaTrvania.equals(""))
-                        Toast.makeText(MainActivity.this, "musis zadat datum zaciatku aj dobu trvania", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this, "Užívateľ s daným rodným číslom už je v karanténe", Toast.LENGTH_SHORT).show();
+                    else if (datumZaciatku.equals("") || datumZaciatku.equals("DD/MM/YYYY") || dobaTrvania.equals("")) //kontrola ci uzivatel zadal datum zaciatku aj dobu trvania
+                        Toast.makeText(MainActivity.this, "Musíš zadať dátum začiatku aj dobu trvania", Toast.LENGTH_SHORT).show();
                     else {
                         if (db.help.porovnajDatumyPoPridaniXdni(db.help.dateFromString(datumZaciatku), new Date(), 0)) { //kontrola ci datum zaciatku neni vacsi ako dnesny
                             if (db.help.porovnajDatumyPoPridaniXdni(db.help.dateFromString(poslednyDatum), db.help.dateFromString(datumZaciatku), 0)) { //kontrola ci zadany datum nieje mensi ako posledny
                                 boolean checkInsert = db.insertKarantenu(res.getCount() + 1, datumZaciatku, dobaTrvania, rodCislo);
                                 if (checkInsert)
-                                    Toast.makeText(MainActivity.this, "zacal si karantenu", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(MainActivity.this, "Začal si karanténu", Toast.LENGTH_SHORT).show();
                                 else
-                                    Toast.makeText(MainActivity.this, "nezacal si karantenu", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(MainActivity.this, "Nezačal si karanténu", Toast.LENGTH_SHORT).show();
                             } else
-                                Toast.makeText(this, "Musis zadat neskorsi datum ako datum poslednej karanteny", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(this, "Musíš zadať neskorší dátum ako dátum poslednej karantény", Toast.LENGTH_SHORT).show();
                         } else
-                            Toast.makeText(this, "musis zadat datum ktory je mensi ako dnesny", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(this, "Musíš zadať dátum ktorý je menší ako dnešný", Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    if (datumZaciatku.equals("") || dobaTrvania.equals(""))
-                        Toast.makeText(MainActivity.this, "musis zadat datum zaciatku aj dobu trvania", Toast.LENGTH_SHORT).show();
+                    if (datumZaciatku.equals("") || datumZaciatku.equals("DD/MM/YYYY") || dobaTrvania.equals("")) //kontrola ci uzivatel zadal datum zaciatku aj dobu trvania
+                        Toast.makeText(MainActivity.this, "Musíš zadať dátum začiatku aj dobu trvania", Toast.LENGTH_SHORT).show();
                     else {
                         if (db.help.porovnajDatumyPoPridaniXdni(db.help.dateFromString(datumZaciatku), new Date(), 0)) { //kontrola ci datum zaciatku neni vacsi ako dnesny
                             boolean checkInsert = db.insertKarantenu(res.getCount() + 1, datumZaciatku, dobaTrvania, rodCislo);
                             if (checkInsert)
-                                Toast.makeText(MainActivity.this, "zacal si karantenu", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(MainActivity.this, "Začal si karanténu", Toast.LENGTH_SHORT).show();
                             else
-                                Toast.makeText(MainActivity.this, "nezacal si karantenu", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(MainActivity.this, "Nezačal si karanténu", Toast.LENGTH_SHORT).show();
                         } else
-                            Toast.makeText(this, "musis zadat datum ktory je mensi ako dnesny", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(this, "Musíš zadať dátum ktorý je menší ako dnešný", Toast.LENGTH_SHORT).show();
 
                     }
                 }
             } else {
-                Toast.makeText(MainActivity.this, "osoba s danym rod cislom neexistuje", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "Užívateľ s daným rod. číslom neexistuje", Toast.LENGTH_SHORT).show();
             }
         }
         else
-            Toast.makeText(this, "musis zadat rod. cislo", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Rod. číslo musí byť vyplnené", Toast.LENGTH_SHORT).show();
     }
 
     public void onClickBtnKontrolaKaranteny(View v) {
-        System.out.println("klikol som kontroluKaranteny.....................................");
-        //tu robim vypis
-
         EditText rcPole;
         rcPole = findViewById(R.id.rcKarantenaKontrola);
         String rc = rcPole.getText().toString();
@@ -554,40 +510,37 @@ public class MainActivity extends AppCompatActivity {
             if (db.jeVtabulke(rc, "UserInfo", 2)) {
                 Cursor res = db.getData("Karantena");
                 if (res.getCount() == 0) {
-                    Toast.makeText(this, "v tabulke karantena nie su ziadne udaje", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "V tabuľke karanténa niesu žiadne záznamy", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 StringBuffer buffer = new StringBuffer();
                 while (res.moveToNext()) {
-
                     String rcvypis = res.getString(3);
-
                     if (rc.equals(rcvypis)) {
-                        System.out.println("som vo while");
                         buffer.append("id_karanteny : " + res.getString(0) + "\n");
-                        buffer.append("Datum zaciatku karanteny : " + res.getString(1) + "\n");
-                        buffer.append("Doba trvania karanteny : " + res.getString(2) + "\n");
+                        buffer.append("Dátum začiatku karantény : " + res.getString(1) + "\n");
+                        buffer.append("Doba trvania karantény : " + res.getString(2) + "\n");
                         if (db.help.nemozeVon(Integer.parseInt(res.getString(0)), "Karantena", Integer.parseInt(res.getString(2)), db)) {
-                            buffer.append("Stav : !!!stale v karantene!!!" + "\n");
+                            buffer.append("Stav : !!!stále v karanténe!!!" + "\n");
                         } else {
-                            buffer.append("Stav : si volny ako vtak ohnivak" + "\n");
+                            buffer.append("Stav : si voľný ako vták ohnivák" + "\n");
                         }
 
-                        buffer.append("Rod. cislo : " + rcvypis + "\n\n");
+                        buffer.append("Rod. číslo : " + rcvypis + "\n\n");
                     }
                 }
                 if (buffer.length() == 0)
-                    buffer.append("Rod. cislo : " + rc + " nema zapisany ziadnu karantenu" + "\n\n");
+                    buffer.append("Rod. číslo : " + rc + " nemá zapísanú žiadnu karanténu" + "\n\n");
                 AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
                 builder.setCancelable(true);
-                builder.setTitle("Karantena");
+                builder.setTitle("Karanténa");
                 builder.setMessage(buffer.toString());
                 builder.show();
             } else
-                Toast.makeText(this, "osoba s danym rodnym cislom neexistuje", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Užívateľ s daným rodným číslom neexistuje", Toast.LENGTH_SHORT).show();
         }
         else
-            Toast.makeText(this, "musis zadat rod. cislo", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Rod. číslo musí byť vyplnené", Toast.LENGTH_SHORT).show();
     }
 
 
@@ -620,7 +573,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
                 if (vysledok.equals("Positive") && db.help.nemozeVon(Integer.parseInt(id), "Testy", 7, db)) {
-                    stavVystup.setText("Chory");
+                    stavVystup.setText("Chorý");
                 } else {
                     if (db.jeVtabulke(rcKontrola, "Karantena", 3)) {
                         res = db.getData("Karantena");
@@ -632,11 +585,11 @@ public class MainActivity extends AppCompatActivity {
                                 jeVkarantene = db.help.nemozeVon(Integer.parseInt(res.getString(0)), "Karantena", Integer.parseInt(res.getString(2)), db);
                         }
                         if (jeVkarantene)
-                            stavVystup.setText("V karantene");
+                            stavVystup.setText("V karanténe");
                         else
-                            stavVystup.setText("Zdravy");
+                            stavVystup.setText("Zdravý");
                     } else
-                        stavVystup.setText("Zdravy");
+                        stavVystup.setText("Zdravý");
                 }
                 datumVystup.setText(datum);
                 vysledokVystup.setText(vysledok);
@@ -649,7 +602,7 @@ public class MainActivity extends AppCompatActivity {
                         String rcvypis = res.getString(4);
                         if (rcKontrola.equals(rcvypis)) {
                             if (!getDatum(rcKontrola, 2).equals("")) {
-                                ockovany = "Ano";
+                                ockovany = "Áno";
                                 ockovaciaDavka = res.getString(2);
                             }
                         }
@@ -680,11 +633,11 @@ public class MainActivity extends AppCompatActivity {
                 priezviskoVystup.setText("");
                 ockovanyVystup.setText("");
                 typVakcinyVystup.setText("");
-                Toast.makeText(this, "uzivatel s danym rodnym cislom neexistuje", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Užívateľ s daným rodným číslom neexistuje", Toast.LENGTH_SHORT).show();
             }
         }
         else
-            Toast.makeText(this, "musis zadat rod. cislo", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Rod. číslo musí byť vyplnené", Toast.LENGTH_SHORT).show();
     }
 
 
