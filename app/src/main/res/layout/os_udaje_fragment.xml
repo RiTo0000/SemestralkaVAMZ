@@ -16,7 +16,7 @@
             android:layout_marginTop="50dp"
             android:background="@drawable/zaoblene_rohy"
             android:onClick="onClickBtnVypisOsoby"
-            android:text="Vypíš užívaťeľov"
+            android:text="Vypísať užívaťeľov"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.501"
             app:layout_constraintStart_toStartOf="parent"
@@ -157,7 +157,7 @@
             android:layout_marginTop="50dp"
             android:background="@drawable/zaoblene_rohy"
             android:onClick="onClickBtnSentInfo"
-            android:text="Uložiť"
+            android:text="Uložiť užívateľa"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/adresa" />

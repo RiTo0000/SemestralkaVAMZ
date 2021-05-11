@@ -389,6 +389,8 @@ public class MainActivity extends AppCompatActivity {
                         Toast.makeText(MainActivity.this, "Prvý dátum musí byť vyplnený", Toast.LENGTH_SHORT).show();
                     else
                     {
+                        if (datum2.equals("") || datum2.equals("DD/MM/YYYY")) //kontrola ci uzivatel vyplnil druhy datum ak nie nastavi ho na prazdny retazes
+                            datum2 = "";
                         if (db.help.porovnajDatumyPoPridaniXdni(db.help.dateFromString(datum1), new Date(), 0)) { //kontrola datum1 ci neni vacsi ako dnesny
                             if (db.help.porovnajDatumyPoPridaniXdni(db.help.dateFromString(datum2), new Date(), 0)) { //kontrola datum2 ci neni vacsi ako dnesny
                                 if (pocetDavok == 2)

@@ -45,6 +45,7 @@
     <string name="kodOCcentra">Kód očk. centra:</string>
     <string name="datumZac">Dátum začiatku:</string>
     <string name="dobaTrvania">Doba trvania:</string>
+    <string name="info_test">Výpis testov</string>
 
 
 </resources>

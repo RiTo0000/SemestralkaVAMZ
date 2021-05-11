@@ -43,7 +43,7 @@
             android:layout_marginTop="20dp"
             android:background="@drawable/zaoblene_rohy"
             android:onClick="onClickBtnVypOckovanie"
-            android:text="Vypíš očkovanie"
+            android:text="Vypísať očkovanie"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/rcOckovanieVypis" />
@@ -204,7 +204,7 @@
             android:layout_marginTop="20dp"
             android:background="@drawable/zaoblene_rohy"
             android:onClick="onClickBtnZapOckovanie"
-            android:text="Zapíš očkovanie"
+            android:text="Zapísať očkovanie"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/kodOC" />

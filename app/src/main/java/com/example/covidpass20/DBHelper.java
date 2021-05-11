@@ -17,13 +17,12 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class DBHelper extends SQLiteOpenHelper {
-    //String DB_FULL_PATH = "Userdatabase.db";
-    String DB_FULL_PATH = "lol4.db";
+    String DB_FULL_PATH = "CovidPassDatabase.db";
     Helper help;
 
     public DBHelper(Context context) {
 
-        super(context, "lol4.db", null, 1);
+        super(context, "CovidPassDatabase.db", null, 1);
         help = new Helper();
     }
 
@@ -46,6 +45,15 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL("drop Table if exists Karantena");
     }
 
+    /**
+     * metoda na pridanie noveho pouzivatela do databazy
+     * @param meno meno pouzivatela
+     * @param priezvisko priezvisko pouzivatela
+     * @param rodcislo rodne cislo pouzivatela
+     * @param mesto mesto bydliska pouzivatela
+     * @param adresa adresa bydliska pouzivatela
+     * @return vrati true ak bolo pridanie uspesne
+     */
     public boolean insertUser(String meno, String priezvisko, String rodcislo, String mesto, String adresa) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -65,6 +73,15 @@ public class DBHelper extends SQLiteOpenHelper {
         }
     }
 
+    /**
+     * metoda na upravenie uz existujuceho pouzivatela
+     * @param meno nove meno pouzivatela
+     * @param priezvisko nove priezvisko pouzivatela
+     * @param rodcislo rodne cislo uzivatela ktoreho chceme upravit
+     * @param mesto nove mesto bydliska uzivatela
+     * @param adresa nova adresa bydliska uzivatela
+     * @return vrati true ak bolo upravenie uspesne
+     */
     public boolean updateUser(String meno, String priezvisko, String rodcislo, String mesto, String adresa) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -92,6 +109,11 @@ public class DBHelper extends SQLiteOpenHelper {
 
     }
 
+    /**
+     * metoda ktora vrati kurzor potrebny na pristupenie k datam z databazy
+     * @param table nazov tabulky z ktorej chceme citat data
+     * @return vrati kurzor na danu tabulku
+     */
     public Cursor getData(String table)
     {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -99,6 +121,15 @@ public class DBHelper extends SQLiteOpenHelper {
         return cursor;
     }
 
+    /**
+     * metoda na vlozenie noveho testu
+     * @param id id testu pre potreby primarneho kluca
+     * @param datum datum testu
+     * @param vysledok vysledok testu
+     * @param typ typ testu
+     * @param rodcislo rodne cislo pouzivatela ktoreho test zapisujeme
+     * @return vrati true ak bolo vlozenie uspesne
+     */
     public boolean insertTest(int id, String datum, String vysledok, String typ, String rodcislo) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -118,7 +149,16 @@ public class DBHelper extends SQLiteOpenHelper {
         }
     }
 
-
+    /**
+     * metoda na vlozenie zaznamu o ockovani danej osoby
+     * @param datum1 datum prvej davky ockovania
+     * @param datum2 datum druhej davky ockovania
+     * @param typ typ ockovacej davky
+     * @param pocetDavok pocet potrebnych davok
+     * @param rodcislo rodne cislo ockovanej osoby
+     * @param kodCentra kod ockovacieho centra
+     * @return vrati true ak bolo vlozenie uspesne
+     */
     public boolean insertOckovanie(String datum1, String datum2, String typ , int pocetDavok, String rodcislo, String kodCentra) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -139,6 +179,12 @@ public class DBHelper extends SQLiteOpenHelper {
         }
     }
 
+    /**
+     * metoda ktora sluzi na doplnenie druhej davky ockovania
+     * @param datum2 datum druhej davky ockovania
+     * @param rodcislo rodne cislo uzivatela ktoreho ockovanie mame doplnit
+     * @return vrati true ak doplnenie bolo uspesne
+     */
     public boolean updateOckovanie(String datum2, String rodcislo) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -163,6 +209,14 @@ public class DBHelper extends SQLiteOpenHelper {
 
     }
 
+    /**
+     * metoda ktora sluzi na pridanie novej karanteny do databazy
+     * @param id id karanteny potrebne pre primarny kluc
+     * @param datum datum zaciatku karanteny
+     * @param doba doba trvania karanteny
+     * @param rodcislo rodne cislo pouzivatela ktory ma byt v karantene
+     * @return vrati true ak sa pridanie podarilo
+     */
     public boolean insertKarantenu(int id, String datum, String doba, String rodcislo) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -181,6 +235,10 @@ public class DBHelper extends SQLiteOpenHelper {
         }
     }
 
+    /**
+     * metoda ktora sluzi na kontrolu ci dana tabulka uz existuje aby sa nam stale nevytvarala nova
+     * @return vrati true ak databaza existuje
+     */
     private boolean checkDataBase() {
         SQLiteDatabase checkDB = null;
         try {
@@ -196,6 +254,13 @@ public class DBHelper extends SQLiteOpenHelper {
         return checkDB != null;
     }
 
+    /**
+     * metoda ktora kontroluje ci uzivatel so zadanym rodnym cislom je v danej tabulke
+     * @param rodCislo rodne cislo pouzivatela
+     * @param tabulka tabulka v ktorej to mame kontrolovat
+     * @param indexRC index miesta na ktorom sa v danej tabulke nachadza rodne cislo
+     * @return vrati true ak sa tam nachadza aspon jeden zaznam
+     */
     public boolean jeVtabulke(String rodCislo, String tabulka, int indexRC) {
         Cursor res = getData(tabulka);
         if (res.getCount() == 0)

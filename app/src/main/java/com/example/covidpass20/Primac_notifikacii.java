@@ -36,7 +36,7 @@ public class Primac_notifikacii extends BroadcastReceiver {
     public void notifikaciaStavu(Context context) {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "notifyMe")
                 .setSmallIcon(R.drawable.ic_nakazeny)
-                .setContentTitle("Notifikácia")
+                .setContentTitle("Stav užívateľov")
                 .setContentText("Výpis stavu všetkých užívateľov...")
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setStyle(new NotificationCompat.BigTextStyle()
@@ -68,7 +68,7 @@ public class Primac_notifikacii extends BroadcastReceiver {
                         {
                             if (karantena.getString(3).equals(rodCislo)) {
                                 if (db.help.porovnajCiSaRovnajuDvaDatumyPoPridaniXdni(db.help.dateFromString(karantena.getString(1)), new Date(), Integer.parseInt(karantena.getString(2)) - 1)) { //kontrola ci danemu pouzivatelovi zajtra konci karantena
-                                    notificationText = notificationText + "Pouzivatelovi " + user.getString(0) + " " + user.getString(1) + " zajtra konci karantena \n"; //nastavovanie textu notifikacie
+                                    notificationText = notificationText + "Používateľovi " + user.getString(0) + " " + user.getString(1) + " zajtra končí karanténa \n"; //nastavovanie textu notifikacie
                                 }
                                 break;
                             }
@@ -82,8 +82,8 @@ public class Primac_notifikacii extends BroadcastReceiver {
         {
             NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "notifyMe")
                     .setSmallIcon(R.drawable.ic_karantena)
-                    .setContentTitle("Karantena")
-                    .setContentText("Vypis ludom co zajtra konci karantena...")
+                    .setContentTitle("Karanténa")
+                    .setContentText("Užívatelia, ktorým zajtra končí karanténa...")
                     .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                     .setStyle(new NotificationCompat.BigTextStyle()
                             .bigText(notificationText))
@@ -117,7 +117,7 @@ public class Primac_notifikacii extends BroadcastReceiver {
                         {
                             if (testy.getString(4).equals(rodCislo)) {
                                 if (db.help.porovnajCiSaRovnajuDvaDatumyPoPridaniXdni(db.help.dateFromString(testy.getString(1)), new Date(), 6)) { //kontrola ci danemu uzivatelovi zajtra konci test
-                                    notificationText = notificationText + "Pouzivatelovi " + user.getString(0) + " " + user.getString(1) + " zajtra konci test \n"; //nastavovanie textu notifikacie
+                                    notificationText = notificationText + "Používateľovi " + user.getString(0) + " " + user.getString(1) + " zajtra končí test \n"; //nastavovanie textu notifikacie
                                 }
                                 break;
                             }
@@ -132,7 +132,7 @@ public class Primac_notifikacii extends BroadcastReceiver {
             NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "notifyMe")
                     .setSmallIcon(R.drawable.ic_test)
                     .setContentTitle("Testy")
-                    .setContentText("Vypis ludom co zajtra konci test...")
+                    .setContentText("Užívatelia, ktorým zajtra končí platnosť testu...")
                     .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                     .setStyle(new NotificationCompat.BigTextStyle()
                             .bigText(notificationText))
@@ -155,7 +155,7 @@ public class Primac_notifikacii extends BroadcastReceiver {
         notificationText = "";
         while (res.moveToNext()) {
             zapisOsoby = res.getString(0) + " " + res.getString(1)
-                    + " si zdravy mozes ist kamkolvek"+ "\n";
+                    + " si zdravý môžeš ísť kamkoľvek"+ "\n";
             if (db.jeVtabulke(res.getString(2),"Karantena", 3))
             {
                 Cursor r = db.getData("Karantena");
@@ -165,7 +165,7 @@ public class Primac_notifikacii extends BroadcastReceiver {
                     if (db.help.nemozeVon(Integer.parseInt(r.getString(0)), "Karantena", 7, db))
                     {
                         zapisOsoby =  res.getString(0) + " " + res.getString(1)
-                                + " je v karantene preto musi ostat doma"+ "\n";
+                                + " je v karanténe preto musí ostať doma"+ "\n";
                     }
                 }
                 else
@@ -177,7 +177,7 @@ public class Primac_notifikacii extends BroadcastReceiver {
                             if (db.help.nemozeVon(Integer.parseInt(r.getString(0)), "Karantena", 7, db))
                             {
                                 zapisOsoby =  res.getString(0) + " " + res.getString(1)
-                                        + " je v karantene preto musi ostat doma"+ "\n";
+                                        + " je v karanténe preto musí ostať doma"+ "\n";
                             }
                             break;
                         }
@@ -190,10 +190,10 @@ public class Primac_notifikacii extends BroadcastReceiver {
                 r.moveToLast();
                 if (res.getString(2).equals(r.getString(4)))
                 {
-                    if (db.help.nemozeVon(Integer.parseInt(r.getString(0)), "Testy", 7, db))
+                    if (r.getString(2).equals("Positive") && db.help.nemozeVon(Integer.parseInt(r.getString(0)), "Testy", 7, db))
                     {
                         zapisOsoby = res.getString(0) + " " + res.getString(1)
-                                + " je pozitivny preto musi ostat doma"+ "\n";
+                                + " je pozitívny preto musí ostať doma"+ "\n";
                     }
                 }
                 else
@@ -202,10 +202,10 @@ public class Primac_notifikacii extends BroadcastReceiver {
                     {
                         if (res.getString(2).equals(r.getString(4)))
                         {
-                            if (db.help.nemozeVon(Integer.parseInt(r.getString(0)), "Testy", 7, db))
+                            if (r.getString(2).equals("Positive") && db.help.nemozeVon(Integer.parseInt(r.getString(0)), "Testy", 7, db))
                             {
                                 zapisOsoby = res.getString(0) + " " + res.getString(1)
-                                        + " je pozitivny preto musi ostat doma"+ "\n";
+                                        + " je pozitívny preto musí ostať doma"+ "\n";
                             }
                             break;
                         }
