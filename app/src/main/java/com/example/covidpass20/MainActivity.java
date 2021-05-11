@@ -6,8 +6,10 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -558,13 +560,13 @@ public class MainActivity extends AppCompatActivity {
         typVakcinyVystup = findViewById(R.id.typVakcinyKontrola);
         String rcKontrola = rodCisloVstup.getText().toString();
         rcKontrola = rcKontrola.trim();
-        if (!rcKontrola.equals("")) {
-            if (db.jeVtabulke(rcKontrola, "UserInfo", 2)) {
+        if (!rcKontrola.equals("")) {//kontrola ci uzivatel zadal rodne cislo
+            if (db.jeVtabulke(rcKontrola, "UserInfo", 2)) { //kontrola ci uzivatel zo zadanym rodnym cislom existuje
                 String datum = "";
                 String vysledok = "";
                 String id = "";
                 Cursor res = db.getData("Testy");
-                while (res.moveToNext()) {
+                while (res.moveToNext()) { //vyhladavanie posledneho testu pre daneho pouzivatela
                     String rcvypis = res.getString(4);
                     if (rcKontrola.equals(rcvypis)) {
                         id = res.getString(0);
@@ -572,13 +574,13 @@ public class MainActivity extends AppCompatActivity {
                         vysledok = res.getString(2);
                     }
                 }
-                if (vysledok.equals("Positive") && db.help.nemozeVon(Integer.parseInt(id), "Testy", 7, db)) {
+                if (vysledok.equals("Positive") && db.help.nemozeVon(Integer.parseInt(id), "Testy", 7, db)) { //kontrola ci je test este aktualny ak bol pozitivny
                     stavVystup.setText("Chorý");
                 } else {
-                    if (db.jeVtabulke(rcKontrola, "Karantena", 3)) {
+                    if (db.jeVtabulke(rcKontrola, "Karantena", 3)) { //kontroola ci dany uzivatel nieje v karantene
                         res = db.getData("Karantena");
                         boolean jeVkarantene = false;
-                        while (res.moveToNext()) {
+                        while (res.moveToNext()) { //vyhladavanie poslednej karanteny a overovanie ci je karantena este platna
                             String rcOut = res.getString(3);
 
                             if (rcKontrola.equals(rcOut))
@@ -596,13 +598,17 @@ public class MainActivity extends AppCompatActivity {
 
                 String ockovany = "";
                 String ockovaciaDavka = "";
-                if (db.jeVtabulke(rcKontrola, "Ockovanie", 4)) {
+                if (db.jeVtabulke(rcKontrola, "Ockovanie", 4)) { //kontrola ci dany uzivatel bol ockovany
                     res = db.getData("Ockovanie");
-                    while (res.moveToNext()) {
+                    while (res.moveToNext()) { // vyhladavanie informacii o ockovani pre daneho uzivatela
                         String rcvypis = res.getString(4);
                         if (rcKontrola.equals(rcvypis)) {
-                            if (!getDatum(rcKontrola, 2).equals("")) {
+                            if (!getDatum(rcKontrola, 2).equals("")) { //ak ma druhy datum zapisany tak uz je zaockovany
                                 ockovany = "Áno";
+                                ockovaciaDavka = res.getString(2);
+                            }
+                            else {
+                                ockovany = "Nie";
                                 ockovaciaDavka = res.getString(2);
                             }
                         }

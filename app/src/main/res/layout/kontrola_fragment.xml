@@ -203,9 +203,9 @@
             android:layout_width="200dp"
             android:layout_height="56dp"
             android:layout_marginTop="20dp"
-            android:text="Zobrazit"
             android:background="@drawable/zaoblene_rohy"
             android:onClick="onClickBtnKontrola"
+            android:text="Zobraziť"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/rcKontrola" />

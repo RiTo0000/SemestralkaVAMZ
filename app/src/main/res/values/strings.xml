@@ -1,51 +1,50 @@
 <resources>
-    <string name="app_name">CovidPass2.0</string>
+    <string name="app_name">CovidPass</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">Covid Pass</string>
-    <string name="nav_header_subtitle">najlepsia apka na svete</string>
+    <string name="nav_header_subtitle">Tvoj kľúč do COVID-free života</string>
     <string name="nav_header_desc">Navigation header</string>
-    <string name="action_settings">Settings</string>
 
     <string-array name="vakciny">
         <item>Pfizer</item>
         <item>Moderna</item>
         <item>AstraZeneca</item>
         <item>Sputnik</item>
+        <item>Jonson &amp; Jonson</item>
     </string-array>
     <string-array name="test">
         <item>PCR</item>
-        <item>Antigen</item>
-        <item>Plachaci</item>
+        <item>Antigenový</item>
+        <item>Kloktací</item>
     </string-array>
 
 
-    <string name="menu_os_udaje">Os.udaje</string>
+    <string name="menu_os_udaje">Os.údaje</string>
     <string name="menu_testy">Testy</string>
-    <string name="menu_ockovanie">Ockovanie</string>
-    <string name="menu_nakazeny">Nakazeny</string>
+    <string name="menu_ockovanie">Očkovanie</string>
+    <string name="menu_nakazeny">Nakazený</string>
     <string name="menu_kontrola">Kontrola</string>
-    <string name="menu_karantena">Karantena</string>
-    <string name="test_datum">Datum testu:</string>
+    <string name="menu_karantena">Karanténa</string>
+    <string name="test_datum">Dátum testu:</string>
     <string name="test_typ">Typ testu:</string>
-    <string name="rodCislo">Rod. cislo:</string>
+    <string name="test_fotka">Vyber fotku:</string>
+    <string name="rodCislo">Rod. číslo:</string>
     <string name="meno">Meno:</string>
     <string name="priezvisko">Priezvisko:</string>
     <string name="mesto">Mesto:</string>
     <string name="adresa">Adresa:</string>
     <string name="stav">Stav:</string>
-    <string name="poslednyTest">Posledny test:</string>
-    <string name="vysledok">Vysledok:</string>
-    <string name="ockovany">Ockovany:</string>
-    <string name="typVakciny">Typ vakciny:</string>
-    <string name="datum1">Datum 1. davka:</string>
-    <string name="datum2">Datum 2. davka:</string>
-    <string name="dveDavky">Dve davky:</string>
-    <string name="kodOCcentra">Kod ock. centra:</string>
-    <string name="datumZac">Datum zaciatku:</string>
+    <string name="poslednyTest">Posledný test:</string>
+    <string name="vysledok">Výsledok:</string>
+    <string name="ockovany">Zaočkovaný:</string>
+    <string name="typVakciny">Typ vakcíny:</string>
+    <string name="datum1">Dátum 1. dávka:</string>
+    <string name="datum2">Dátum 2. dávka:</string>
+    <string name="dveDavky">Dve dávky:</string>
+    <string name="kodOCcentra">Kód očk. centra:</string>
+    <string name="datumZac">Dátum začiatku:</string>
     <string name="dobaTrvania">Doba trvania:</string>
-
-    <string name="rod_cislo_zadaj">musis zadat rod. cislo</string>
 
 
 </resources>
