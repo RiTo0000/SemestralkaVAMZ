@@ -61,7 +61,7 @@ public class TestFragment extends Fragment implements AdapterView.OnItemSelected
         rcVypis.setWidth(stageWidth/2);
 
 
-
+        //kontrola spravneho formatu datumu
         TextWatcher tw = new TextWatcher() {
             private String current = "";
             private String ddmmyyyy = "DDMMYYYY";

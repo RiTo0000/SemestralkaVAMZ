@@ -18,12 +18,12 @@ import java.util.Date;
 
 public class DBHelper extends SQLiteOpenHelper {
     //String DB_FULL_PATH = "Userdatabase.db";
-    String DB_FULL_PATH = "lol3.db";
+    String DB_FULL_PATH = "lol4.db";
     Helper help;
 
     public DBHelper(Context context) {
 
-        super(context, "lol3.db", null, 1);
+        super(context, "lol4.db", null, 1);
         help = new Helper();
     }
 
@@ -92,28 +92,6 @@ public class DBHelper extends SQLiteOpenHelper {
 
     }
 
-    public boolean deleteUser(String rodcislo) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.rawQuery("select * from UserInfo where rodcislo=?", new String[] {rodcislo} );
-        if (cursor.getCount() > 0)
-        {
-            long result=db.delete("UserInfo", "rodcislo=?", new String[] {rodcislo} );
-            if (result == -1)
-            {
-                return false;
-            }
-            else
-            {
-                return true;
-            }
-        }
-        else
-        {
-            return false;
-        }
-
-    }
-
     public Cursor getData(String table)
     {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -139,29 +117,6 @@ public class DBHelper extends SQLiteOpenHelper {
             return true;
         }
     }
-
-    public boolean deleteTest(String id) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.rawQuery("select * from Testy where id_test=?", new String[] {id} );
-        if (cursor.getCount() > 0)
-        {
-            long result=db.delete("Testy", "id_test=?", new String[] {id} );
-            if (result == -1)
-            {
-                return false;
-            }
-            else
-            {
-                return true;
-            }
-        }
-        else
-        {
-            return false;
-        }
-
-    }
-
 
 
     public boolean insertOckovanie(String datum1, String datum2, String typ , int pocetDavok, String rodcislo, String kodCentra) {
@@ -208,28 +163,6 @@ public class DBHelper extends SQLiteOpenHelper {
 
     }
 
-    public boolean deleteOckovanie(String rodcislo) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.rawQuery("select * from UserInfo where rodcislo=?", new String[] {rodcislo} );
-        if (cursor.getCount() > 0)
-        {
-            long result=db.delete("UserInfo", "rodcislo=?", new String[] {rodcislo} );
-            if (result == -1)
-            {
-                return false;
-            }
-            else
-            {
-                return true;
-            }
-        }
-        else
-        {
-            return false;
-        }
-
-    }
-
     public boolean insertKarantenu(int id, String datum, String doba, String rodcislo) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -246,28 +179,6 @@ public class DBHelper extends SQLiteOpenHelper {
         {
             return true;
         }
-    }
-
-    public boolean deleteKarantenu(String rodcislo) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.rawQuery("select * from Karantena where rodcislo=?", new String[] {rodcislo} );
-        if (cursor.getCount() > 0)
-        {
-            long result=db.delete("Karantena", "rodcislo=?", new String[] {rodcislo} );
-            if (result == -1)
-            {
-                return false;
-            }
-            else
-            {
-                return true;
-            }
-        }
-        else
-        {
-            return false;
-        }
-
     }
 
     private boolean checkDataBase() {

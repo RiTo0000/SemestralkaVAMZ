@@ -69,7 +69,7 @@ public class OckovanieFragment extends Fragment implements AdapterView.OnItemSel
         datum1Pole.setWidth(stageWidth/2);
         datum2Pole.setWidth(stageWidth/2);
 
-
+        //kontrola spravneho formatu datumu 1
         TextWatcher tw1 = new TextWatcher() {
             private String current = "";
             private String ddmmyyyy = "DDMMYYYY";
@@ -132,6 +132,7 @@ public class OckovanieFragment extends Fragment implements AdapterView.OnItemSel
         };
         datum1Pole.addTextChangedListener(tw1);
 
+        //kontrola spravneho formatu datumu 2
         TextWatcher tw2 = new TextWatcher() {
             private String current = "";
             private String ddmmyyyy = "DDMMYYYY";

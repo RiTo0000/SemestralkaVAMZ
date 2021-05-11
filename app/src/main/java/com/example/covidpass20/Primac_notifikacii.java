@@ -29,11 +29,15 @@ public class Primac_notifikacii extends BroadcastReceiver {
 
     }
 
+    /**
+     * metoda na vypisanie notifikacie o stave vsetkych uzivatelov
+     * @param context parameter potrebny pre tvorbu notifikacie
+     */
     public void notifikaciaStavu(Context context) {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "notifyMe")
                 .setSmallIcon(R.drawable.ic_nakazeny)
-                .setContentTitle("Notifikacia")
-                .setContentText("Vypis stavu vsetkych osob...")
+                .setContentTitle("Notifikácia")
+                .setContentText("Výpis stavu všetkých užívateľov...")
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setStyle(new NotificationCompat.BigTextStyle()
                         .bigText(notificationText))
@@ -44,23 +48,27 @@ public class Primac_notifikacii extends BroadcastReceiver {
         notificationManager.notify(100, builder.build());
     }
 
+    /**
+     * metoda na tvorbu a vypisanie notifikacie o konciacej karantene pre uzivatelov
+     * @param context parameter potrebny pre tvorbu notifikacie
+     */
     public void notifikaciaKaranteny(Context context) {
         Cursor user = db.getData("UserInfo");
         Cursor karantena = db.getData("Karantena");
         String rodCislo = "";
         String notificationText = "";
-        if (user.getCount() != 0) {
-            if (karantena.getCount() != 0) {
+        if (user.getCount() != 0) { //kontrola ci aplikacia ma nejakých užívatelov
+            if (karantena.getCount() != 0) { //kontrola ci tabulka karantena nie je prazdna
                 while (user.moveToNext())
                 {
                     rodCislo = user.getString(2);
-                    if (db.jeVtabulke(rodCislo, "Karantena", 3)) {
+                    if (db.jeVtabulke(rodCislo, "Karantena", 3)) { //kontrola ci dany uzivatel je v tabulke
                         karantena.moveToLast();
                         do
                         {
                             if (karantena.getString(3).equals(rodCislo)) {
-                                if (db.help.porovnajCiSaRovnajuDvaDatumyPoPridaniXdni(db.help.dateFromString(karantena.getString(1)), new Date(), Integer.parseInt(karantena.getString(2)) - 1)) {
-                                    notificationText = notificationText + "Pouzivatelovi " + user.getString(0) + " " + user.getString(1) + " zajtra konci karantena \n";
+                                if (db.help.porovnajCiSaRovnajuDvaDatumyPoPridaniXdni(db.help.dateFromString(karantena.getString(1)), new Date(), Integer.parseInt(karantena.getString(2)) - 1)) { //kontrola ci danemu pouzivatelovi zajtra konci karantena
+                                    notificationText = notificationText + "Pouzivatelovi " + user.getString(0) + " " + user.getString(1) + " zajtra konci karantena \n"; //nastavovanie textu notifikacie
                                 }
                                 break;
                             }
@@ -70,7 +78,7 @@ public class Primac_notifikacii extends BroadcastReceiver {
             }
         }
 
-        if (!notificationText.equals(""))
+        if (!notificationText.equals("")) //podmienka aby sa prazdna notifikacia nevypisovala
         {
             NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "notifyMe")
                     .setSmallIcon(R.drawable.ic_karantena)
@@ -89,23 +97,27 @@ public class Primac_notifikacii extends BroadcastReceiver {
 
     }
 
+    /**
+     * metoda na tvorbu a vypisanie notifikacie o konciacom teste pre uzivatelov
+     * @param context parameter potrebny pre tvorbu notifikacie
+     */
     public void notifikaciaTestov(Context context) {
         Cursor user = db.getData("UserInfo");
         Cursor testy = db.getData("Testy");
         String rodCislo = "";
         String notificationText = "";
-        if (user.getCount() != 0) {
-            if (testy.getCount() != 0) {
+        if (user.getCount() != 0) { //kontrola ci v aplikacii je zaregistrovany nejaky uzivatel
+            if (testy.getCount() != 0) {// kontrola ci tabulka testy nie je prazdna
                 while (user.moveToNext())
                 {
                     rodCislo = user.getString(2);
-                    if (db.jeVtabulke(rodCislo, "Testy", 4)) {
+                    if (db.jeVtabulke(rodCislo, "Testy", 4)) { //kontrola ci dany uzivatel je v tabulke testy
                         testy.moveToLast();
                         do
                         {
                             if (testy.getString(4).equals(rodCislo)) {
-                                if (db.help.porovnajCiSaRovnajuDvaDatumyPoPridaniXdni(db.help.dateFromString(testy.getString(1)), new Date(), 6)) {
-                                    notificationText = notificationText + "Pouzivatelovi " + user.getString(0) + " " + user.getString(1) + " zajtra konci test \n";
+                                if (db.help.porovnajCiSaRovnajuDvaDatumyPoPridaniXdni(db.help.dateFromString(testy.getString(1)), new Date(), 6)) { //kontrola ci danemu uzivatelovi zajtra konci test
+                                    notificationText = notificationText + "Pouzivatelovi " + user.getString(0) + " " + user.getString(1) + " zajtra konci test \n"; //nastavovanie textu notifikacie
                                 }
                                 break;
                             }
@@ -115,7 +127,7 @@ public class Primac_notifikacii extends BroadcastReceiver {
             }
         }
 
-        if (!notificationText.equals(""))
+        if (!notificationText.equals("")) //podmienka aby sa prazdna notifikacia nevypisovala
         {
             NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "notifyMe")
                     .setSmallIcon(R.drawable.ic_test)
@@ -134,6 +146,9 @@ public class Primac_notifikacii extends BroadcastReceiver {
 
     }
 
+    /**
+     * metoda na nastavenie textu notifikacie stavu
+     */
     public void nastavTextNotifikacieStavu() {
         Cursor res = db.getData("UserInfo");
         String zapisOsoby = "";

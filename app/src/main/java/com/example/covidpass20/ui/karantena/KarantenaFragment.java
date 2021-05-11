@@ -56,7 +56,7 @@ public class KarantenaFragment extends Fragment {
         datumPole.setWidth(stageWidth/2);
 
 
-
+        //kontrola spravneho formatu datumu
         TextWatcher tw = new TextWatcher() {
             private String current = "";
             private String ddmmyyyy = "DDMMYYYY";

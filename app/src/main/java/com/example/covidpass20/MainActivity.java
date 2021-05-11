@@ -83,6 +83,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    /**
+     * metoda ktora sa zavola po stlaceni tlacidla pre zapisanie noveho uzivatela
+     * skontroluje vstupne parametre a zapise dane informacie do databazy
+     * @param v parameter potrebny pre funkcnost onClick metody
+     */
     public void onClickBtnSentInfo(View v)
     {
         EditText menoPole, peizviskoPole, rcPole, mestoPole, adresaPole;
@@ -134,6 +139,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    /**
+     * metoda ktora vytvori notifikacny kanal
+     */
     public void createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
         {
@@ -148,6 +156,11 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * metoda ktora sa zavola po stlaceni tlacidla pre vypisanie uzivatelov
+     * vypise vsetkych pouzivatelov z databazy do vyskakovacieho okna
+     * @param v parameter potrebny pre funkcnost onClick metody
+     */
     public void onClickBtnVypisOsoby(View v)
     {
         Cursor res = db.getData("UserInfo");
@@ -173,7 +186,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
+    /**
+     * metoda ktora sa zavola po stlaceni tlacidla pre zapisanie noveho testu
+     * skontroluje vstupne parametre a zapise dane informacie do databazy
+     * @param v parameter potrebny pre funkcnost onClick metody
+     */
     public void onClickBtnZapTest(View v)
     {
         EditText datumPole, rcPole;
@@ -234,6 +251,11 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "Rod. číslo musí byť vyplnené", Toast.LENGTH_SHORT).show();
     }
 
+    /**
+     * metoda ktora sa zavola po stlaceni tlacidla pre vypisanie testov
+     * skontroluje vstupny parameter a vypise testy pre danu osobu
+     * @param v parameter potrebny pre funkcnost onClick metody
+     */
     public void onClickBtnVypTesty(View v)
     {
         EditText rcPole;
@@ -260,7 +282,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
             if (buffer.length() == 0)
-                buffer.append("Rod. číslo : " + rc + " nemá zapésané žiadne testy"+ "\n\n");
+                buffer.append("Osoba s rod. číslom : " + rc + " nemá zapésané žiadne testy"+ "\n\n");
             // vypis buffera
             AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
             builder.setCancelable(true);
@@ -272,7 +294,13 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "Rod. číslo musí byť vyplnené", Toast.LENGTH_SHORT).show();
     }
 
-    public String getDatum(String rodCislo, int cisDatum) { //metoda na vratenie datumu bud prveho alebo druheho podla vstupnych parametrov
+    /**
+     * metoda ktora vrati datum z tabulky ockovanie bud prvy alebo druhy podla vstupnych parametrov
+     * @param rodCislo rodne cislo danej osoby
+     * @param cisDatum cislo datumu ci je to prvy alebo druhy datum
+     * @return vrati datum z databazy vo forme stringu
+     */
+    public String getDatum(String rodCislo, int cisDatum) {
         Cursor res = db.getData("Ockovanie");
         if (res.getCount() == 0)
         {
@@ -289,6 +317,11 @@ public class MainActivity extends AppCompatActivity {
         return "";
     }
 
+    /**
+     * metoda ktora sa zavola po stlaceni tlacidla pre zapisanie ockovania
+     * skontroluje vstupne parametre a podla nich zapise dane informacie do databazy
+     * @param v parameter potrebny pre funkcnost onClick metody
+     */
     public void onClickBtnZapOckovanie(View v) {
         EditText datum1Pole, datum2Pole, rcPole, kodOCPole;
         datum1Pole = findViewById(R.id.datum1);
@@ -396,6 +429,11 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * metoda ktora sa zavola pri staleceni tlacidla pre vypis ockovania
+     * skontroluje vstupne parametre a podla toho vypise ockovanie pre danu osobu
+     * @param v parameter potrebny pre funkcnost onClick metody
+     */
     public void onClickBtnVypOckovanie(View v)
     {
         EditText rcPole;
@@ -422,7 +460,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
             if (buffer.length() == 0)
-                buffer.append("Užívateľ s rod. číslom : " + rc + " nie je zaočkovaná"+ "\n\n");
+                buffer.append("Užívateľ s rod. číslom : " + rc + " nie je zaočkovaný"+ "\n\n");
             //vypis buffera
             AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
             builder.setCancelable(true);
@@ -435,7 +473,11 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "Rod. číslo musí byť vyplnené", Toast.LENGTH_SHORT).show();
     }
 
-
+    /**
+     * metoda ktora sa zavola po stlaceni tlacidla pre zacatie karanteny
+     * skontroluje vstupne parametre a ulozi dane informacie do databazy
+     * @param v parameter potrebny pre funkcnost onClick metody
+     */
     public void onClickBtnZacKarantenu(View v) {
         EditText datumZaciatkuPole, dobaTrvaniaPole, rcPole;
         datumZaciatkuPole = findViewById(R.id.datumZaciatku);
@@ -502,6 +544,11 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "Rod. číslo musí byť vyplnené", Toast.LENGTH_SHORT).show();
     }
 
+    /**
+     * metoda ktora sa zavola po stlaceni tlacidla pre kontrolu karanteny
+     * skontroluje parametre a vypise karanteny pre daneho uzivatela
+     * @param v parameter potrebny pre funkcnost onClick metody
+     */
     public void onClickBtnKontrolaKaranteny(View v) {
         EditText rcPole;
         rcPole = findViewById(R.id.rcKarantenaKontrola);
@@ -545,9 +592,11 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "Rod. číslo musí byť vyplnené", Toast.LENGTH_SHORT).show();
     }
 
-
-
-
+    /**
+     * metoda ktora sa zavola po stlaceni tlacidla pre kontrolu daneho uzivatela
+     * skontroluje vstupny parameter rodne cislo a podla neho vypise informacie o zdravotnom stave daneho uzivatela
+     * @param v parameter potrebny pre funkcnost onClick metody
+     */
     public void onClickBtnKontrola(View v) {
         EditText rodCisloVstup, datumVystup, vysledokVystup, stavVystup, menoVystup, priezviskoVystup, ockovanyVystup, typVakcinyVystup;
         rodCisloVstup = findViewById(R.id.rcKontrola);
