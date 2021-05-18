@@ -192,7 +192,7 @@
             android:layout_marginEnd="10dp"
             android:layout_marginRight="10dp"
             android:ems="10"
-            android:hint="xxxxxx/xxxx"
+            android:hint="@string/rod_cislo_napoveda"
             android:maxLength="11"
             android:inputType="date"
             app:layout_constraintEnd_toEndOf="parent"
@@ -205,7 +205,7 @@
             android:layout_marginTop="20dp"
             android:background="@drawable/zaoblene_rohy"
             android:onClick="onClickBtnKontrola"
-            android:text="Zobraziť"
+            android:text="@string/kontrola_btn"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/rcKontrola" />

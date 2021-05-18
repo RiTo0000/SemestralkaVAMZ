@@ -46,6 +46,25 @@
     <string name="datumZac">Dátum začiatku:</string>
     <string name="dobaTrvania">Doba trvania:</string>
     <string name="info_test">Výpis testov</string>
+    <string name="som_v_karantene">Som v karanténe ?</string>
+    <string name="rod_cislo_napoveda">xxxxxx/xxxx</string>
+    <string name="datum_napoveda">DD/MM/YYYY</string>
+    <string name="doba_trvania_napoveda">14</string>
+    <string name="zacat_karantenu_btn">Začať karanténu</string>
+    <string name="kontrola_btn">Zobraziť</string>
+    <string name="pocet_davok_napoveda">Áno</string>
+    <string name="kodOC_napoveda">xxxxxx</string>
+    <string name="zapOckovanie_btn">Zapísať očkovanie</string>
+    <string name="vypOC_btn">Vypísať očkovanie</string>
+    <string name="vypUzivatelov_btn">Vypísať užívaťeľov</string>
+    <string name="priezvisko_napoveda">Mrkvička</string>
+    <string name="meno_napoveda">Jožko</string>
+    <string name="setUser_btn">Uložiť užívateľa</string>
+    <string name="mesto_napoveda">Horná dolná</string>
+    <string name="adresa_napoveda">Južná 123</string>
+    <string name="vysledokTestu_napoveda">Pozitive</string>
+    <string name="zapTest_btn">Zapísať test</string>
+    <string name="vypTesty_napoveda">Vypísať testy</string>
 
 
 </resources>
